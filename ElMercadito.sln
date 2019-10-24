@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElMercadito.Common", "ElMercadito.Common\ElMercadito.Common.csproj", "{9448D7AB-BEAA-4DA7-A761-637B70ECFAF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElMercadito.Web", "ElMercadito.Web\ElMercadito.Web.csproj", "{4F626B10-EE55-4742-BBAC-8EFF71E486B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9448D7AB-BEAA-4DA7-A761-637B70ECFAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9448D7AB-BEAA-4DA7-A761-637B70ECFAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9448D7AB-BEAA-4DA7-A761-637B70ECFAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9448D7AB-BEAA-4DA7-A761-637B70ECFAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F626B10-EE55-4742-BBAC-8EFF71E486B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F626B10-EE55-4742-BBAC-8EFF71E486B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F626B10-EE55-4742-BBAC-8EFF71E486B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F626B10-EE55-4742-BBAC-8EFF71E486B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EF208B06-B4AB-4AEC-BEB7-072FFD242FC6}
+	EndGlobalSection
+EndGlobal
