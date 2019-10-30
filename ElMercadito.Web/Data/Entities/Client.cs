@@ -27,7 +27,7 @@ namespace ElMercadito.Web.Data.Entities
         public string CellPhone { get; set; }
 
         [Display(Name = "Township, colony other information by security by cell phone")]
-        [MaxLength(15, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+        [MaxLength(100, ErrorMessage = "The {0} field can not have more than {1} characters.")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         public string Address { get; set; }
 
