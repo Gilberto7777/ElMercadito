@@ -13,7 +13,7 @@ namespace ElMercadito.Web.Data.Entities
         [Display(Name = "Offer Name")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
-        public decimal OfferName { get; set; }
+        public string OfferName { get; set; }
 
         [Display(Name = "Price")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -21,7 +21,7 @@ namespace ElMercadito.Web.Data.Entities
         public decimal Price { get; set; }
 
         [Display(Name = "Is Available?")]
-        public bool IsAvailable { get; set; }
+        public string IsAvailable { get; set; }
 
         public string Remarks { get; set; }
 

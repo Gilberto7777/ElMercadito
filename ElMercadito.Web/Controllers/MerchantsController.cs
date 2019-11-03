@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElMercadito.Web.Data;
 using ElMercadito.Web.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElMercadito.Web.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class MerchantsController : Controller
     {
         private readonly DataContext _context;
@@ -54,7 +56,7 @@ namespace ElMercadito.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Document,FirstName,LastName,CellPhone,Address")] Merchant merchant)
+        public async Task<IActionResult> Create([Bind("Id")] Merchant merchant)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +88,7 @@ namespace ElMercadito.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Document,FirstName,LastName,CellPhone,Address")] Merchant merchant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id")] Merchant merchant)
         {
             if (id != merchant.Id)
             {

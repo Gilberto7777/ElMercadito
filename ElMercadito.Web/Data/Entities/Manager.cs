@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ElMercadito.Web.Data.Entities
 {
-    public class Client
+    public class Manager
     {
-
         public int Id { get; set; }
-
         public User User { get; set; }
     }
-
 }
