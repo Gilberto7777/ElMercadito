@@ -4,15 +4,105 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Merchant</h2>
 
 <div>
-    <h4>Merchant</h4>
+    <h4>Details</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Document)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Document)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Address)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
+    <a asp-action="AddProduct" asp-route-id="@Model.Id" class="btn btn-primary">Add Product</a>
+    <a asp-action="Index" class="btn btn-success">Back to List</a>
 </div>
+@if (Model.Products.Count == 0)
+
+{
+    <h5> Not Products Added yet.</h5>
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().IsAvailable)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Remarks)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    
+                    <td>
+                        <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit Product</a> |
+                        <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info">Details Product</a> |
+                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete Product</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

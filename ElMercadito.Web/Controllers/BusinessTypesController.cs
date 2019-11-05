@@ -7,30 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElMercadito.Web.Data;
 using ElMercadito.Web.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ElMercadito.Web.Controllers
 {
-    [Authorize(Roles = "Manager")]
-    public class MerchantsController : Controller
+    public class BusinessTypesController : Controller
     {
-        private readonly DataContext _dataContext;
+        private readonly DataContext _context;
 
-        public MerchantsController(DataContext dataContext)
+        public BusinessTypesController(DataContext context)
         {
-            _dataContext = dataContext;
+            _context = context;
         }
 
-        // GET: Merchants
-        public IActionResult Index()
+        // GET: BusinessTypes
+        public async Task<IActionResult> Index()
         {
-            return View( _dataContext.Merchants
-                .Include(m => m.User)
-                .Include(m => m.Products)
-                .Include(m => m.Offers));
+            return View(await _context.BusinessTypes.ToListAsync());
         }
 
-        // GET: Merchants/Details/5
+        // GET: BusinessTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,45 +33,39 @@ namespace ElMercadito.Web.Controllers
                 return NotFound();
             }
 
-            var merchant = await _dataContext.Merchants
-                .Include(m => m.User)
-                .Include(m => m.Products)
-                .ThenInclude(p => p.ProductImages)
-                .Include(o => o.Offers)
-                .ThenInclude(c => c.Client)
-                .ThenInclude(l => l.User)
+            var businessType = await _context.BusinessTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (merchant == null)
+            if (businessType == null)
             {
                 return NotFound();
             }
 
-            return View(merchant);
+            return View(businessType);
         }
 
-        // GET: Merchants/Create
+        // GET: BusinessTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Merchants/Create
+        // POST: BusinessTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Merchant merchant)
+        public async Task<IActionResult> Create([Bind("Id,Name,DescriptionBusiness,HomeService,WalkingOrLocal,WorkingHours")] BusinessType businessType)
         {
             if (ModelState.IsValid)
             {
-                _dataContext.Add(merchant);
-                await _dataContext.SaveChangesAsync();
+                _context.Add(businessType);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(merchant);
+            return View(businessType);
         }
 
-        // GET: Merchants/Edit/5
+        // GET: BusinessTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +73,22 @@ namespace ElMercadito.Web.Controllers
                 return NotFound();
             }
 
-            var merchant = await _dataContext.Merchants.FindAsync(id);
-            if (merchant == null)
+            var businessType = await _context.BusinessTypes.FindAsync(id);
+            if (businessType == null)
             {
                 return NotFound();
             }
-            return View(merchant);
+            return View(businessType);
         }
 
-        // POST: Merchants/Edit/5
+        // POST: BusinessTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Merchant merchant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DescriptionBusiness,HomeService,WalkingOrLocal,WorkingHours")] BusinessType businessType)
         {
-            if (id != merchant.Id)
+            if (id != businessType.Id)
             {
                 return NotFound();
             }
@@ -108,12 +97,12 @@ namespace ElMercadito.Web.Controllers
             {
                 try
                 {
-                    _dataContext.Update(merchant);
-                    await _dataContext.SaveChangesAsync();
+                    _context.Update(businessType);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MerchantExists(merchant.Id))
+                    if (!BusinessTypeExists(businessType.Id))
                     {
                         return NotFound();
                     }
@@ -124,10 +113,10 @@ namespace ElMercadito.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(merchant);
+            return View(businessType);
         }
 
-        // GET: Merchants/Delete/5
+        // GET: BusinessTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,30 +124,30 @@ namespace ElMercadito.Web.Controllers
                 return NotFound();
             }
 
-            var merchant = await _dataContext.Merchants
+            var businessType = await _context.BusinessTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (merchant == null)
+            if (businessType == null)
             {
                 return NotFound();
             }
 
-            return View(merchant);
+            return View(businessType);
         }
 
-        // POST: Merchants/Delete/5
+        // POST: BusinessTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var merchant = await _dataContext.Merchants.FindAsync(id);
-            _dataContext.Merchants.Remove(merchant);
-            await _dataContext.SaveChangesAsync();
+            var businessType = await _context.BusinessTypes.FindAsync(id);
+            _context.BusinessTypes.Remove(businessType);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MerchantExists(int id)
+        private bool BusinessTypeExists(int id)
         {
-            return _dataContext.Merchants.Any(e => e.Id == id);
+            return _context.BusinessTypes.Any(e => e.Id == id);
         }
     }
 }

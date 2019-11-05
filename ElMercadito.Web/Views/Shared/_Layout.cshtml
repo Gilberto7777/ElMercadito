@@ -35,11 +35,12 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
                     {
-                    <li><a asp-area="" asp-controller="Merchants" asp-action="Index">Merchants</a></li>
+                        <li><a asp-area="" asp-controller="Merchants" asp-action="Index">Merchants</a></li>
+                        <li><a asp-area="" asp-controller="BusinessTypes" asp-action="Index">Business Types</a></li>
                     }
-                        
-                       
-                    </ul>
+
+
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (User.Identity.IsAuthenticated)
                     {

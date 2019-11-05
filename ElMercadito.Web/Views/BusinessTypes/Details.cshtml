@@ -1,0 +1,48 @@
+﻿@model ElMercadito.Web.Data.Entities.BusinessType
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BusinessType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DescriptionBusiness)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DescriptionBusiness)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeService)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HomeService)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WalkingOrLocal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WalkingOrLocal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkingHours)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WorkingHours)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
