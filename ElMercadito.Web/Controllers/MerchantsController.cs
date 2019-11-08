@@ -8,17 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using ElMercadito.Web.Data;
 using ElMercadito.Web.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
+using ElMercadito.Web.Models;
+using ElMercadito.Web.Helpers;
 
 namespace ElMercadito.Web.Controllers
 {
     [Authorize(Roles = "Manager")]
     public class MerchantsController : Controller
     {
+        
         private readonly DataContext _dataContext;
+        private readonly IUserHelper _userHelper;
 
-        public MerchantsController(DataContext dataContext)
+        public MerchantsController(
+            DataContext dataContext,
+            IUserHelper userHelper)
         {
             _dataContext = dataContext;
+            _userHelper = userHelper;
         }
 
         // GET: Merchants
@@ -65,15 +72,49 @@ namespace ElMercadito.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Merchant merchant)
+        public async Task<IActionResult> Create(AddUserViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _dataContext.Add(merchant);
-                await _dataContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = await CreateUserAsync(model);
+                if (user != null)
+                {
+                    var merchant = new Merchant
+                    {
+                        Offers = new List<Offer>(),
+                        Products = new List<Product>(),
+                        User = user
+                    };
+                    _dataContext.Merchants.Add(merchant);
+                    await _dataContext.SaveChangesAsync();
+                    return RedirectToAction("Index"); 
+                }
+                ModelState.AddModelError(string.Empty, "User with this email already exist.");
             }
-            return View(merchant);
+            return View(model);
+        }
+
+        private async Task<User> CreateUserAsync(AddUserViewModel model)
+        {
+            var user = new User
+            {
+                Address = model.Address,
+                Document = model.Document,
+                Email = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                UserName = model.Username
+
+            };
+            var result = await _userHelper.AddUserAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                user = await _userHelper.GetUserByEmailAsync(model.Username);
+                await _userHelper.AddUserToRoleAsync(user, "Merchant");
+                return user;
+            }
+            return null;
         }
 
         // GET: Merchants/Edit/5

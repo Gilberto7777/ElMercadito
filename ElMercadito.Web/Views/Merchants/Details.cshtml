@@ -76,32 +76,44 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Remarks)
                 </th>
+                <th>
+                    Images
+                </th>
+                <th>
+                    Offers
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Products)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProductName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsAvailable)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Remarks)
-                    </td>
-                    
-                    <td>
-                        <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit Product</a> |
-                        <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info">Details Product</a> |
-                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete Product</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAvailable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductImages.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Offers.Count)
+                </td>
+
+                <td>
+                    <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit Product</a> |
+                    <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info">Details Product</a> |
+                    <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete Product</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
