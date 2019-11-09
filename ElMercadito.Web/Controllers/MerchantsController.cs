@@ -1,37 +1,42 @@
-﻿using System;
+﻿using ElMercadito.Web.Data;
+using ElMercadito.Web.Data.Entities;
+using ElMercadito.Web.Helpers;
+using ElMercadito.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ElMercadito.Web.Data;
-using ElMercadito.Web.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
-using ElMercadito.Web.Models;
-using ElMercadito.Web.Helpers;
 
 namespace ElMercadito.Web.Controllers
 {
     [Authorize(Roles = "Manager")]
     public class MerchantsController : Controller
     {
-        
+
         private readonly DataContext _dataContext;
         private readonly IUserHelper _userHelper;
+        private readonly ICombosHelper _combosHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public MerchantsController(
             DataContext dataContext,
-            IUserHelper userHelper)
+            IUserHelper userHelper,
+            ICombosHelper combosHelper,
+            IConverterHelper converterHelper)
         {
             _dataContext = dataContext;
             _userHelper = userHelper;
+            _combosHelper = combosHelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Merchants
         public IActionResult Index()
         {
-            return View( _dataContext.Merchants
+            return View(_dataContext.Merchants
                 .Include(m => m.User)
                 .Include(m => m.Products)
                 .Include(m => m.Offers));
@@ -87,7 +92,7 @@ namespace ElMercadito.Web.Controllers
                     };
                     _dataContext.Merchants.Add(merchant);
                     await _dataContext.SaveChangesAsync();
-                    return RedirectToAction("Index"); 
+                    return RedirectToAction("Index");
                 }
                 ModelState.AddModelError(string.Empty, "User with this email already exist.");
             }
@@ -201,5 +206,44 @@ namespace ElMercadito.Web.Controllers
         {
             return _dataContext.Merchants.Any(e => e.Id == id);
         }
+        public async Task<IActionResult> AddProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var merchant = await _dataContext.Merchants.FindAsync(id);
+            if (merchant == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductViewModel
+            {
+                MerchantId = merchant.Id,
+                BusinessTypes = _combosHelper.GetComboBusinessTypes()
+
+            };
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await _converterHelper.ToProductAsync(model, true);
+                _dataContext.Products.Add(product);
+                await _dataContext.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.Merchant.Id}");
+            }
+
+            return View(model);
+        
+        }
+
+
     }
 }
