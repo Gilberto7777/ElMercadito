@@ -7,5 +7,7 @@ namespace ElMercadito.Web.Helpers
     public interface IConverterHelper
     {
         Task<Product> ToProductAsync(ProductViewModel model, bool isNew);
+        
+        ProductViewModel ToProductViewModel(Product product);
     }
 }

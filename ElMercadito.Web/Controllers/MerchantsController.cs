@@ -237,11 +237,31 @@ namespace ElMercadito.Web.Controllers
                 var product = await _converterHelper.ToProductAsync(model, true);
                 _dataContext.Products.Add(product);
                 await _dataContext.SaveChangesAsync();
-                return RedirectToAction($"Details/{model.Merchant.Id}");
+                return RedirectToAction($"Details/{model.MerchantId}");
             }
 
             return View(model);
         
+        }
+        public async Task<IActionResult> EditProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var product = await _dataContext.Products
+                .Include(p => p.Merchant)
+                .Include(p => p.BusinessType)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var model = _converterHelper.ToProductViewModel(product);
+
+            return View(model);
+
         }
 
 
