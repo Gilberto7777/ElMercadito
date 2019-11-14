@@ -64,6 +64,8 @@ else
     <table class="table">
         <thead>
             <tr>
+                
+
                 <th>
                     @Html.DisplayNameFor(model => model.Products.FirstOrDefault().ProductName)
                 </th>
@@ -89,6 +91,8 @@ else
             @foreach (var item in Model.Products)
             {
             <tr>
+               
+
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>

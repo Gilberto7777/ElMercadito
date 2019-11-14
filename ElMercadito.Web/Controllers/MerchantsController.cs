@@ -264,6 +264,21 @@ namespace ElMercadito.Web.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await _converterHelper.ToProductAsync(model, false);
+                _dataContext.Products.Update(product);
+                await _dataContext.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.MerchantId}");
+            }
+
+            return View(model);
+
+        }
+
 
     }
 }
