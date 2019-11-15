@@ -1,0 +1,196 @@
+﻿@model ElMercadito.Web.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+    <h2>Product</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            <h4>Merchant</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merchant.User.Document)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Merchant.User.Document)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merchant.User.FirstName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Merchant.User.FirstName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merchant.User.LastName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Merchant.User.LastName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merchant.User.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Merchant.User.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Merchant.User.PhoneNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Merchant.User.PhoneNumber)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div>
+            <h4>Product Details</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ProductName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsAvailable)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsAvailable)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Remarks)
+                </dd>
+                <dt>
+                    Offers
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Offers.Count)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="EditProperty" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="AddImage" asp-route-id="@Model.Id" class="btn btn-primary">Add Image</a>
+    <a asp-action="AddOffers" asp-route-id="@Model.Id" class="btn btn-default">Add Offers</a>
+    <a asp-action="Details" asp-route-id="@Model.Merchant.Id" class="btn btn-success">Back to Merchant</a>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div>
+            <h4>Images</h4>
+            @if (Model.ProductImages.Count == 0)
+            {
+                <h5>Not images added yet.</h5>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductImages.FirstOrDefault().ImageUrl)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ProductImages)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="DeleteImage" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div>
+            <h4>Offers</h4>
+            @if (Model.Offers.Count == 0)
+            {
+                <h5>Not Offers added yet.</h5>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Client
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Offers.FirstOrDefault().OfferName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Offers.FirstOrDefault().Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Offers.FirstOrDefault().Remarks)
+                            </th>
+                            
+                            <th>
+                                @Html.DisplayNameFor(model => model.Offers.FirstOrDefault().IsAvailable)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Offers)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.User.FullNameWithDocument)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OfferName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remarks)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsAvailable)
+                            </td>
+                            <td>
+                                <a asp-action="EditOffer" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                                <a asp-action="DetailsOffer" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                                <a asp-action="DeleteOffer" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+

@@ -279,6 +279,31 @@ namespace ElMercadito.Web.Controllers
 
         }
 
+        public async Task<IActionResult> DetailsProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _dataContext.Products
+                .Include(o => o.Merchant)
+                .ThenInclude(o => o.User)
+                .Include(o => o.Offers)
+                .ThenInclude(c => c.Client)
+                .ThenInclude(l => l.User)
+                .Include(o => o.BusinessType)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+
 
     }
 }
