@@ -20,17 +20,20 @@ namespace ElMercadito.Web.Controllers
         private readonly IUserHelper _userHelper;
         private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
 
         public MerchantsController(
             DataContext dataContext,
             IUserHelper userHelper,
             ICombosHelper combosHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IImageHelper imageHelper)
         {
             _dataContext = dataContext;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
 
         // GET: Merchants
@@ -305,5 +308,72 @@ namespace ElMercadito.Web.Controllers
 
 
 
+        public async Task<IActionResult> AddImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _dataContext.Products.FindAsync(id.Value);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductImageViewModel
+            {
+                Id = product.Id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddImage(ProductImageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                }
+
+                var productImage = new ProductImage
+                {
+                    ImageUrl = path,
+                    Product = await _dataContext.Products.FindAsync(model.Id)
+                };
+
+                _dataContext.ProductImages.Add(productImage);
+                await _dataContext.SaveChangesAsync();
+                return RedirectToAction($"{nameof(DetailsProduct)}/{model.Id}");
+            }
+
+            return View(model);
+        }
+        public async Task<IActionResult> DeleteImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var productImage = await _dataContext.ProductImages
+                .Include(pi => pi.Product)
+                .FirstOrDefaultAsync(pi => pi.Id == id.Value);
+            if (productImage == null)
+            {
+                return NotFound();
+            }
+
+            _dataContext.ProductImages.Remove(productImage);
+            await _dataContext.SaveChangesAsync();
+            return RedirectToAction($"{nameof(DetailsProduct)}/{productImage.Product.Id}");
+        }
+
+        
     }
 }
