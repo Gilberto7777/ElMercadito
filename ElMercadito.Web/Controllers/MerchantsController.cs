@@ -185,14 +185,28 @@ namespace ElMercadito.Web.Controllers
             }
 
             var merchant = await _dataContext.Merchants
+                .Include(o => o.User)
+                .Include(o => o.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (merchant == null)
             {
                 return NotFound();
             }
+            if (merchant.Products.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "El comerciante no se puede borrar tiene productos.");
+                return RedirectToAction(nameof(Index));
+            }
 
-            return View(merchant);
+
+                
+
+            _dataContext.Merchants.Remove(merchant);
+            await _dataContext.SaveChangesAsync();
+            await _userHelper.DeleteUserAsync(merchant.User.Email);
+            return RedirectToAction(nameof(Index));
         }
+
 
         // POST: Merchants/Delete/5
         [HttpPost, ActionName("Delete")]
