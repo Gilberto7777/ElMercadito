@@ -394,6 +394,27 @@ namespace ElMercadito.Web.Controllers
             return RedirectToAction($"{nameof(DetailsProduct)}/{productImage.Product.Id}");
         }
 
-        
+
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _dataContext.Products
+                .Include(p => p.Merchant)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(pi => pi.Id == id.Value);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _dataContext.ProductImages.RemoveRange(product.ProductImages);
+            _dataContext.Products.Remove(product);
+            await _dataContext.SaveChangesAsync();
+            return RedirectToAction($"{nameof(Details)}/{product.Merchant.Id}");
+        }
     }
 }

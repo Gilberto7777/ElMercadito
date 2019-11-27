@@ -64,7 +64,7 @@ else
     <table class="table">
         <thead>
             <tr>
-                
+
 
                 <th>
                     @Html.DisplayNameFor(model => model.Products.FirstOrDefault().ProductName)
@@ -90,35 +90,74 @@ else
         <tbody>
             @foreach (var item in Model.Products)
             {
-            <tr>
-               
+                <tr>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsAvailable)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductImages.Count)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Offers.Count)
-                </td>
 
-                <td>
-                    <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit Product</a> |
-                    <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info">Details Product</a> |
-                    <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete Product</a>
-                </td>
-            </tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductImages.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Offers.Count)
+                    </td>
+
+                    <td>
+                        <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit Product</a> |
+                        <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info">Details Product</a> |
+                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
+}
+<!--Delete Item-->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete the record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+    	$(document).ready(function () {
+        	// Delete item
+        	var item_to_delete;
+
+        	$('.deleteItem').click((e) => {
+            	item_to_delete = e.currentTarget.dataset.id;
+        	});
+
+        	$("#btnYesDelete").click(function () {
+            	window.location.href = '/Merchants/DeleteProduct/' + item_to_delete;
+        	});
+    	});
+    </script>
 }
