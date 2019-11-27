@@ -133,48 +133,54 @@ namespace ElMercadito.Web.Controllers
                 return NotFound();
             }
 
-            var merchant = await _dataContext.Merchants.FindAsync(id);
+            var merchant = await _dataContext.Merchants
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id.Value);
             if (merchant == null)
             {
                 return NotFound();
             }
-            return View(merchant);
+
+            var model = new EditUserViewModel
+            {
+                Address = merchant.User.Address,
+                Document = merchant.User.Document,
+                FirstName = merchant.User.FirstName,
+                Id = merchant.Id,
+                LastName = merchant.User.LastName,
+                PhoneNumber = merchant.User.PhoneNumber
+            };
+
+            return View(model);
         }
+
 
         // POST: Merchants/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Merchant merchant)
+        public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            if (id != merchant.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _dataContext.Update(merchant);
-                    await _dataContext.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MerchantExists(merchant.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var merchant = await _dataContext.Merchants
+                    .Include(o => o.User)
+                    .FirstOrDefaultAsync(o => o.Id == model.Id);
+
+                merchant.User.Document = model.Document;
+                merchant.User.FirstName = model.FirstName;
+                merchant.User.LastName = model.LastName;
+                merchant.User.Address = model.Address;
+                merchant.User.PhoneNumber = model.PhoneNumber;
+
+                await _userHelper.UpdateUserAsync(merchant.User);
                 return RedirectToAction(nameof(Index));
             }
-            return View(merchant);
+
+            return View(model);
         }
+
 
         // GET: Merchants/Delete/5
         public async Task<IActionResult> Delete(int? id)
