@@ -125,25 +125,24 @@ namespace ElMercadito.Web.Controllers
             }
 
             var businessType = await _context.BusinessTypes
+                .Include(pt => pt.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (businessType == null)
             {
                 return NotFound();
             }
+            if (businessType.Products.Count > 0)
+            {
+                // TODO : message
+                return RedirectToAction(nameof(Index));
+            }
 
-            return View(businessType);
-        }
-
-        // POST: BusinessTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var businessType = await _context.BusinessTypes.FindAsync(id);
             _context.BusinessTypes.Remove(businessType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+       
 
         private bool BusinessTypeExists(int id)
         {

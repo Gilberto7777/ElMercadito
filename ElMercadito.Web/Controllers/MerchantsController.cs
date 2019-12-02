@@ -263,6 +263,7 @@ namespace ElMercadito.Web.Controllers
                 return RedirectToAction($"Details/{model.MerchantId}");
             }
 
+            model.BusinessTypes = _combosHelper.GetComboBusinessTypes();
             return View(model);
         
         }
