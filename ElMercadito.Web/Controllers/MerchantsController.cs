@@ -89,7 +89,7 @@ namespace ElMercadito.Web.Controllers
                 {
                     var merchant = new Merchant
                     {
-                        Offers = new List<Offer>(),
+                        
                         Products = new List<Product>(),
                         User = user
                     };

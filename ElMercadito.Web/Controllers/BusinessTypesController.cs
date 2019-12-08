@@ -54,7 +54,7 @@ namespace ElMercadito.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DescriptionBusiness,HomeService,WalkingOrLocal,WorkingHours")] BusinessType businessType)
+        public async Task<IActionResult> Create([Bind("Id,Name")] BusinessType businessType)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace ElMercadito.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DescriptionBusiness,HomeService,WalkingOrLocal,WorkingHours")] BusinessType businessType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] BusinessType businessType)
         {
             if (id != businessType.Id)
             {

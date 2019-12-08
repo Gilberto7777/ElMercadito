@@ -121,9 +121,9 @@ namespace ElMercadito.Web.Data
         {
             if (!_context.BusinessTypes.Any())
             {
-                _context.BusinessTypes.Add(new BusinessType { Name = "Calcetines", DescriptionBusiness ="", HomeService ="", WalkingOrLocal ="", WorkingHours ="" });
-                _context.BusinessTypes.Add(new BusinessType { Name = "Carniceria", DescriptionBusiness = "", HomeService = "", WalkingOrLocal = "", WorkingHours = "" });
-                _context.BusinessTypes.Add(new BusinessType { Name = "Papeleria", DescriptionBusiness = "", HomeService = "", WalkingOrLocal = "", WorkingHours = "" });
+                _context.BusinessTypes.Add(new BusinessType { Name = "Calcetines" });
+                _context.BusinessTypes.Add(new BusinessType { Name = "Carniceria"});
+                _context.BusinessTypes.Add(new BusinessType { Name = "Papeleria"});
                 await _context.SaveChangesAsync();
             }
         }
