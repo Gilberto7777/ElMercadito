@@ -1,6 +1,8 @@
 ﻿using ElMercadito.Common.Models;
 using ElMercadito.Web.Data;
 using ElMercadito.Web.Data.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace ElMercadito.Web.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class MerchantsController : ControllerBase
     {
         private readonly DataContext _dataContext;

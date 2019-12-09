@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElMercadito.Web.Data;
 using ElMercadito.Web.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElMercadito.Web.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class BusinessTypesController : Controller
     {
         private readonly DataContext _context;
