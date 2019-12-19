@@ -5,7 +5,7 @@ namespace ElMercadito.Common.Services
 {
     public interface IApiService
     {
-        Task<Response<MerchantResponse>> GetMerchantByEmail(
+        Task<Response<MerchantResponse>> GetMerchantByEmailAsync(
             string urlBase, 
             string servicePrefix, 
             string controller, 
@@ -18,5 +18,7 @@ namespace ElMercadito.Common.Services
             string servicePrefix, 
             string controller, 
             TokenRequest request);
+
+        Task<bool> CheckConnectionAsync(string url);
     }
 }

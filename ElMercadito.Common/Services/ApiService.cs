@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ElMercadito.Common.Models;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 
 namespace ElMercadito.Common.Services
 {
@@ -55,7 +56,7 @@ namespace ElMercadito.Common.Services
             }
         }
 
-        public async Task<Response<MerchantResponse>> GetMerchantByEmail(
+        public async Task<Response<MerchantResponse>> GetMerchantByEmailAsync(
             string urlBase,
             string servicePrefix,
             string controller,
@@ -102,7 +103,18 @@ namespace ElMercadito.Common.Services
                     Message = ex.Message
                 };
             }
+        
         }
+        public async Task<bool> CheckConnectionAsync(string url)
+        {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                return false;
+            }
+
+            return await CrossConnectivity.Current.IsRemoteReachable(url);
+        }
+
     }
 
 }
