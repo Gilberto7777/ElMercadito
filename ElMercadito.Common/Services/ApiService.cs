@@ -10,7 +10,7 @@ namespace ElMercadito.Common.Services
 {
     public class ApiService : IApiService
     {
-        public async Task<Response> GetTokenAsync(
+        public async Task<Response<TokenResponse>> GetTokenAsync(
             string urlBase,
             string servicePrefix,
             string controller,
@@ -31,7 +31,7 @@ namespace ElMercadito.Common.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new Response
+                    return new Response<TokenResponse>
                     {
                         IsSuccess = false,
                         Message = result,
@@ -39,7 +39,7 @@ namespace ElMercadito.Common.Services
                 }
 
                 var token = JsonConvert.DeserializeObject<TokenResponse>(result);
-                return new Response
+                return new Response<TokenResponse>
                 {
                     IsSuccess = true,
                     Result = token
@@ -47,7 +47,7 @@ namespace ElMercadito.Common.Services
             }
             catch (Exception ex)
             {
-                return new Response
+                return new Response<TokenResponse>
                 {
                     IsSuccess = false,
                     Message = ex.Message
@@ -55,7 +55,7 @@ namespace ElMercadito.Common.Services
             }
         }
 
-        public async Task<Response> GetMerchantByEmail(
+        public async Task<Response<MerchantResponse>> GetMerchantByEmail(
             string urlBase,
             string servicePrefix,
             string controller,
@@ -80,7 +80,7 @@ namespace ElMercadito.Common.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new Response
+                    return new Response<MerchantResponse>
                     {
                         IsSuccess = false,
                         Message = result,
@@ -88,7 +88,7 @@ namespace ElMercadito.Common.Services
                 }
 
                 var merchant = JsonConvert.DeserializeObject<MerchantResponse>(result);
-                return new Response
+                return new Response<MerchantResponse>
                 {
                     IsSuccess = true,
                     Result = merchant
@@ -96,7 +96,7 @@ namespace ElMercadito.Common.Services
             }
             catch (Exception ex)
             {
-                return new Response
+                return new Response<MerchantResponse>
                 {
                     IsSuccess = false,
                     Message = ex.Message

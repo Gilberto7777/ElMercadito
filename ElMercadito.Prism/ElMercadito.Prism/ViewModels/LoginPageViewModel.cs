@@ -24,6 +24,11 @@ namespace ElMercadito.Prism.ViewModels
             _apiService = apiService;
             Title = "Login";
             IsEnabled = true;
+
+        //: TODO Eliminar las lineas
+        Email = "jzuluaga55@hotmail.com";
+        Password = "123456";
+
             
         }
 
@@ -93,6 +98,7 @@ namespace ElMercadito.Prism.ViewModels
                 return;
             }
 
+            var token = (TokenResponse)response.Result;
 
             await App.Current.MainPage.DisplayAlert("Ok", "Muy Bien", "Accept");
 
